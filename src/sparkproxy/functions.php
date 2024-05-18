@@ -243,7 +243,7 @@ if (!defined('SPARKPROXY_FUNCTIONS_VERSION')) {
         $encryptedMsg = fromHex($encryptedMsgHex);
     
         $decryptedMsg = $privateKey->decrypt($encryptedMsg);
-    
+
         return $decryptedMsg;
     }
     

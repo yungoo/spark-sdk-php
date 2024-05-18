@@ -29,11 +29,11 @@ class SparkProxyClient
         list($ret, $info) = $this->post('CheckAvailable', $encryptedMsg);
         if ($ret !== null && isset($ret['code']) && $ret['code'] == 200) {
             $receivedEncryptedMsg = $ret['data'];
-            list($receivedDecryptedMsg, $error) = $this->auth->decryptUsingPrivateKey($receivedEncryptedMsg);
-            if ($error !== null) {
-                return array(false, $error);
+            $receivedDecryptedMsg = $this->auth->decryptUsingPrivateKey($receivedEncryptedMsg);
+            if ($receivedDecryptedMsg === null) {
+                return array(false, 'decrypt message failed');
             }
-            $receivedMsg = toString($receivedDecryptedMsg);
+            $receivedMsg = \SparkProxy\toString($receivedDecryptedMsg);
             return array($msg === $receivedMsg, null);
         }
 

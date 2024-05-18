@@ -2,6 +2,7 @@
 namespace SparkProxy;
 
 use Ramsey\Uuid\Uuid;
+use phpseclib3\Crypt\RSA;
 
 class Auth
 {
@@ -18,10 +19,12 @@ class Auth
         
         $this->supplierNo = $supplierNo;
         $this->privateKey = rsaLoadPemPrivateKey($privateKey);
+        $this->privateKey = $this->privateKey->withPadding(RSA::ENCRYPTION_PKCS1 | RSA::SIGNATURE_PKCS1);
 
         $publicKey = $publicKey ?? Config::PUBLIC_KEY;
         if ($publicKey !== null) {
             $this->publicKey = rsaLoadPemPublicKey($publicKey);
+            $this->publicKey = $this->publicKey->withPadding(RSA::ENCRYPTION_PKCS1 | RSA::SIGNATURE_PKCS1);
         }
     }
 
