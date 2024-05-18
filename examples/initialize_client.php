@@ -25,4 +25,4 @@ bhVFzej/rM1tuId+1LIIqzYzDSSJE4BaOeqyRkfa9jN+
 
 
 $auth = new Auth($supplierNo, $privateKey);
-$client = new SparkProxyClient($auth, Config::SANDBOX_API_HOST);
+$client = new SparkProxyClient($auth, Config::QA_API_HOST);

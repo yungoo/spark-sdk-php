@@ -46,7 +46,7 @@ bhVFzej/rM1tuId+1LIIqzYzDSSJE4BaOeqyRkfa9jN+
 -----END RSA PRIVATE KEY-----';
 
 $auth = new Auth($supplierNo, $privateKey);
-$client = new SparkProxyClient($auth, Config::SANDBOX_API_HOST);
+$client = new SparkProxyClient($auth, Config::QA_API_HOST);
 
 list($ret, $err) = $client->getProductStock(103);
 if ($err == null) {
