@@ -1,18 +1,16 @@
 # Sparkproxy OpenApi SDK for PHP
 
 [![Software License](https://img.shields.io/badge/license-MIT-brightgreen.svg)](LICENSE)
-[![GitHub release](https://img.shields.io/github/v/tag/sparkpoxy/spark-sdk-python.svg?label=release)](https://github.com/yungoo/spark-sdk-python/releases)
-[![Latest Stable Version](https://img.shields.io/pypi/v/sparkproxy.svg)](https://pypi.python.org/pypi/sparkproxy)
-[![Download Times](https://img.shields.io/pypi/dm/sparkproxy.svg)](https://pypi.python.org/pypi/sparkproxy)
-
-
+[![GitHub release](https://img.shields.io/github/v/tag/sparkpoxy/spark-sdk-php.svg?label=release)](https://github.com/yungoo/spark-sdk-php/releases)
+[![Latest Stable Version](https://img.shields.io/pypi/v/sparkproxy.svg)](https://packagist.org/packages/qiniu/php-sdk)
+[![Total Downloads](https://img.shields.io/packagist/dt/sparkproxy/spark-sdk-php.svg)](https://packagist.org/packages/sparkproxy/spark-sdk-php)
 
 ## 安装
 
 推荐使用 `composer` 进行安装。可以使用 composer.json 声明依赖，或者运行下面的命令。SDK 包已经放到这里 [`sparkproxy/php-sdk`][install-packagist] 。
 
 ```bash
-$ composer require sparkproxy/php-sdk
+$ composer require sparkproxy/spark-sdk-php
 ```
 
 ## 运行环境
