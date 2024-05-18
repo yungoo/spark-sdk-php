@@ -87,9 +87,9 @@ $ ./vendor/bin/phpunit tests/SparkProxy/Tests/
 
 ## 联系我们
 
-- 如果需要帮助，请提交工单（在portal右侧点击咨询和建议提交工单，或者直接向 support@qiniu.com 发送邮件）
-- 如果发现了bug， 欢迎提交 [issue](https://github.com/yungoo/php-sdk/issues)
-- 如果有功能需求，欢迎提交 [issue](https://github.com/yungoo/php-sdk/issues)
+- 如果需要帮助，请提交工单（在portal右侧点击咨询和建议提交工单，或者直接向 support@sparkproxy.com 发送邮件）
+- 如果发现了bug， 欢迎提交 [issue](https://github.com/yungoo/spark-sdk-php/issues)
+- 如果有功能需求，欢迎提交 [issue](https://github.com/yungoo/spark-sdk-php/issues)
 - 如果要提交代码，欢迎提交 pull request
 
 ## 代码许可
