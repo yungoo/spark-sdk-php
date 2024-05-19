@@ -54,26 +54,23 @@ class SparkProxyClient
      * create proxy, will create a new order for proxy ips
      * 
      * @param String $reqOrderNo order number
-     * @param String $sku product id
-     * @param int $amount amount of proxy
      * @param int $duration duration of proxy, unit: day
      * @param int $unit unit of duration, 1: day, 2: week, 3: month, according to the product destail
-     * @param String $countryCode country code 
-     * @param String $areaCode area code, can be empty, state code
-     * @param String $cityCode city code, can ben empty
+     * @param array items 
+     *              String String $productId product id
+     *              int $amount amount of proxy
+     *              String $countryCode country code 
+     *              String $areaCode area code, can be empty, state code
+     *              String $cityCode city code, can ben empty
      */
-    public function createProxy(String $reqOrderNo, String $sku, int $amount, int $duration, int $unit, String $countryCode, String $areaCode, String $cityCode)
+    public function createProxy(String $reqOrderNo, int $duration, int $unit, array $items)
     {
         return $this->post('CreateProxy', array(
             "reqOrderNo" => $reqOrderNo,
-            "productId" => $sku,
-            "amount" => $amount,
             "duration" => $duration,
             "unit" => $unit,
-            "countryCode" => $countryCode,
-            "areaCode" => $areaCode,
-            "cityCode" => $cityCode
-        ));
+            "items" => $items
+        ), "2024-05-19");
     }
 
     /**
