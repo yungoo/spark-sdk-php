@@ -125,7 +125,7 @@ class SparkProxyClient
             "reqOrderNo" => $reqOrderNo
         ));
         if ($ret !== null && isset($ret['code']) && $ret['code'] == 200 && isset($ret['data'])) {
-            $data = $ret['data'];
+            $data = &$ret['data'];
             if (isset($data['ipInfo'])) {
                 foreach ($data['ipInfo'] as &$ipInfo) {
                     $password = isset($ipInfo["password"]) ? $ipInfo["password"] : '';
@@ -133,6 +133,7 @@ class SparkProxyClient
                         $ipInfo["password"] = $this->auth->decryptUsingPrivateKey($password);
                     }
                 }
+                unset($ipInfo);
             }
         }
         return array($ret, $info);
@@ -152,7 +153,7 @@ class SparkProxyClient
             "instanceId" => $instanceId
         ));
         if ($ret !== null && isset($ret['code']) && $ret['code'] == 200 && isset($ret['data'])) {
-            $data = $ret['data'];
+            $data = &$ret['data'];
             $password = isset($data["password"]) ? $data["password"] : '';
             if (strlen($password) > 0) {
                 $data["password"] = $this->auth->decryptUsingPrivateKey($password);
