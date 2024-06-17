@@ -162,6 +162,42 @@ class SparkProxyClient
         return array($ret, $err);
     }
 
+    /**
+     * get flow balance
+     * 
+     * @param String $username username 
+     *
+     * @return Array 
+     *
+     */
+    public function getFlowBalance(String $username)
+    {
+        list($ret, $err) = $this->post('GetFlowBalance', array(
+            "username" => $username
+        ));
+        return array($ret, $err);
+    }
+
+    /**
+     * create proxy, will create a new order for proxy ips
+     * 
+     * @param String $username username of flow account
+     * @param String $reqOrderNo order number
+     * @param int $flow flow in MB
+     * @param int $days unit of duration, in days
+     * @param String $countryCode country code empty for no specified region
+     */
+    public function rechargeFlow(String $username, String $reqOrderNo, $countryCode, int $flow, int $days)
+    {
+        return $this->post('RechargeFlow', array(
+            "username" => $username,
+            "reqOrderNo" => $reqOrderNo,
+            "countryCode" => $countryCode,
+            "flow" => $flow,
+            "days" => $days,
+        ));
+    }
+
     private function requestParams($method, $version, $args)
     {
         $baseParams = array(
