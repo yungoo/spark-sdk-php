@@ -2,7 +2,7 @@
 
 [![Software License](https://img.shields.io/badge/license-MIT-brightgreen.svg)](LICENSE)
 [![GitHub release](https://img.shields.io/github/v/tag/sparkpoxy/spark-sdk-php.svg?label=release)](https://github.com/yungoo/spark-sdk-php/releases)
-[![Latest Stable Version](https://img.shields.io/pypi/v/sparkproxy.svg)](https://packagist.org/packages/qiniu/php-sdk)
+[![Latest Stable Version](https://img.shields.io/pypi/v/sparkproxy.svg)](https://packagist.org/packages/sparkproxy/spark-sdk-php)
 [![Total Downloads](https://img.shields.io/packagist/dt/sparkproxy/spark-sdk-php.svg)](https://packagist.org/packages/sparkproxy/spark-sdk-php)
 
 ## 安装
