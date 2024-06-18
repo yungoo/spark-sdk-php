@@ -170,9 +170,9 @@ class SparkProxyClient
      * @return Array 
      *
      */
-    public function getFlowBalance(String $username)
+    public function getProxyUser(String $username)
     {
-        list($ret, $err) = $this->post('GetFlowBalance', array(
+        list($ret, $err) = $this->post('GetProxyUser', array(
             "username" => $username
         ));
         return array($ret, $err);
@@ -183,16 +183,16 @@ class SparkProxyClient
      * 
      * @param String $username username of flow account
      * @param String $reqOrderNo order number
-     * @param int $flow flow in MB
-     * @param int $days unit of duration, in days
+     * @param int $traffic flow in MB
+     * @param int $validityDays unit of duration, in days
      */
-    public function rechargeFlow(String $username, String $reqOrderNo, int $flow, int $days)
+    public function rechargeTraffic(String $username, String $reqOrderNo, int $traffic, int $validityDays)
     {
-        return $this->post('RechargeFlow', array(
+        return $this->post('RechargeTraffic', array(
             "username" => $username,
             "reqOrderNo" => $reqOrderNo,
-            "flow" => $flow,
-            "days" => $days,
+            "traffic" => $traffic,
+            "validityDays" => $validityDays,
         ));
     }
 
@@ -202,9 +202,9 @@ class SparkProxyClient
      * @param String $area_code country/area code of flow endpoint
      * 
      */
-    public function getFlowEndpoints(String $area_code)
+    public function getProxyEndpoints(String $area_code)
     {
-        return $this->post('GetFlowEndpoints', array(
+        return $this->post('GetProxyEndpoints', array(
             "countryCode" => $area_code,
         ));
     }
