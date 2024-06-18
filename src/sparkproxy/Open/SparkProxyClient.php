@@ -165,6 +165,24 @@ class SparkProxyClient
     /**
      * get flow balance
      * 
+     * @param String $userId userId unique 
+     * @param String $name user nick name, optional
+     * 
+     * @return Array 
+     *
+     */
+    public function initProxyUser(String $userId, String $name)
+    {
+        list($ret, $err) = $this->post('InitProxyUser', array(
+            "reqUserId" => $userId,
+            "name" => $name
+        ));
+        return array($ret, $err);
+    }
+
+    /**
+     * get flow balance
+     * 
      * @param String $username username 
      *
      * @return Array 
@@ -193,6 +211,18 @@ class SparkProxyClient
             "reqOrderNo" => $reqOrderNo,
             "traffic" => $traffic,
             "validityDays" => $validityDays,
+        ));
+    }
+
+    /**
+     * recharge flow, will create a new order for proxy ips
+     * 
+     * @param String $reqOrderNo order number
+     */
+    public function getTrafficRecord(String $reqOrderNo)
+    {
+        return $this->post('RechargeTraffic', array(
+            "reqOrderNo" => $reqOrderNo,
         ));
     }
 

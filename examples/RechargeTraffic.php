@@ -15,7 +15,7 @@ function generateOrderNumber() {
     return $orderNumber;
 }
 
-list($ret, $err) = $client->rechargeFlow("user", generateOrderNumber(),  1000, 60);
+list($ret, $err) = $client->rechargeTraffic("user", generateOrderNumber(),  1000, 60);
 if ($err !== null) {
     var_dump($err);
     exit;
