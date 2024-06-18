@@ -4,11 +4,11 @@ namespace SparkProxy;
 
 final class Config
 {
-    const SDK_VER = '0.3';
+    const SDK_VER = '0.3.1';
 
     const API_HOST = 'https://oapi.sparkproxy.com';
     const QA_API_HOST = 'http://8.130.48.76:16801';
-    const Local_API_HOST = 'http://localhost:8081';
+    const Local_API_HOST = 'http://127.0.0.1:8081';
 
     const PUBLIC_KEY='-----BEGIN PUBLIC KEY-----
     MIGfMA0GCSqGSIb3DQEBAQUAA4GNADCBiQKBgQDEovKByCtmQlJJBsZzSyc97gI1

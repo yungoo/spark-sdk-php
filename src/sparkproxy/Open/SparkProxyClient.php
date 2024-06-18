@@ -179,22 +179,33 @@ class SparkProxyClient
     }
 
     /**
-     * create proxy, will create a new order for proxy ips
+     * recharge flow, will create a new order for proxy ips
      * 
      * @param String $username username of flow account
      * @param String $reqOrderNo order number
      * @param int $flow flow in MB
      * @param int $days unit of duration, in days
-     * @param String $countryCode country code empty for no specified region
      */
-    public function rechargeFlow(String $username, String $reqOrderNo, $countryCode, int $flow, int $days)
+    public function rechargeFlow(String $username, String $reqOrderNo, int $flow, int $days)
     {
         return $this->post('RechargeFlow', array(
             "username" => $username,
             "reqOrderNo" => $reqOrderNo,
-            "countryCode" => $countryCode,
             "flow" => $flow,
             "days" => $days,
+        ));
+    }
+
+    /**
+     * get flow endpoint
+     * 
+     * @param String $area_code country/area code of flow endpoint
+     * 
+     */
+    public function getFlowEndpoints(String $area_code)
+    {
+        return $this->post('GetFlowEndpoints', array(
+            "countryCode" => $area_code,
         ));
     }
 
