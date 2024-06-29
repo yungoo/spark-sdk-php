@@ -227,6 +227,24 @@ class SparkProxyClient
     }
 
     /**
+     * list traffic usages
+     * 
+     * @param String $userId user id
+     * @param String $startTime start time
+     * @param String $endTime end time
+     * 
+     * @return Array [{"usage": 1, "date": "2024-06-29"}]
+     */
+    public function listTrafficUsages(String $userId, String $startTime, String $endTime)
+    {
+        return $this->post('ListTrafficUsage', array(
+            "reqUserId" => $userId,
+            "startTime" => $startTime,
+            "endTime" => $endTime,
+        ));
+    }
+
+    /**
      * get flow endpoint
      * 
      * @param String $area_code country/area code of flow endpoint
