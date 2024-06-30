@@ -232,15 +232,17 @@ class SparkProxyClient
      * @param String $userId user id
      * @param String $startTime start time
      * @param String $endTime end time
+     * @param String $type days | hours
      * 
      * @return Array [{"usage": 1, "date": "2024-06-29"}]
      */
-    public function listTrafficUsages(String $userId, String $startTime, String $endTime)
+    public function listTrafficUsages(String $userId, String $startTime, String $endTime, String $type)
     {
         return $this->post('ListTrafficUsage', array(
             "reqUserId" => $userId,
             "startTime" => $startTime,
             "endTime" => $endTime,
+            "type" => $type,
         ));
     }
 
