@@ -9,7 +9,7 @@ $supplierNo = 'test0001';
 $secretKey = 'qwertyuiop123456op123456';
 
 $auth = new Auth($supplierNo, $secretKey);
-$client = new SparkProxyClient($auth, Config::DEV_API_HOST);
+$client = new SparkProxyClient($auth, Config::QA_API_HOST);
 
 
 function generate_order_id() {
