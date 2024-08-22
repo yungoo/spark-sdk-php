@@ -3,9 +3,6 @@
 namespace SparkProxy;
 
 use SparkProxy\Config;
-use \phpseclib3\Crypt\RSA;
-use \phpseclib3\Crypt\PublicKeyLoader;
-use \phpseclib3\File\X509;
 
 if (!defined('SPARKPROXY_FUNCTIONS_VERSION')) {
     define('SPARKPROXY_FUNCTIONS_VERSION', Config::SDK_VER);
@@ -223,37 +220,34 @@ if (!defined('SPARKPROXY_FUNCTIONS_VERSION')) {
         return bin2hex($data);
     }
     
-    function rsaLoadPemPrivateKey($priKey) {
-        return PublicKeyLoader::load($priKey);
+    function aes_encrypt_cbc($plaintext, $key) {
+        $blockSize = openssl_cipher_iv_length('aes-192-cbc');
+        $iv = substr($key, 0, $blockSize);
+        $encrypted = openssl_encrypt($plaintext, 'aes-192-cbc', $key, OPENSSL_RAW_DATA, $iv);
+        return $encrypted;
     }
     
-    function rsaLoadPemPublicKey($pubKey) {
-        return PublicKeyLoader::load($pubKey);
+    function aes_decrypt_cbc($ciphertext, $key) {
+        $blockSize = openssl_cipher_iv_length('aes-192-cbc');
+        $iv = substr($key, 0, $blockSize);
+        $plaintext = openssl_decrypt($ciphertext, 'aes-192-cbc', $key, OPENSSL_RAW_DATA, $iv);
+        if ($plaintext === false) {
+            throw new \Exception("Invalid padding or secret key");
+        }
+        return $plaintext;
     }
-    
-    function rsaPublicEncrypt($msg, $publicKey) {
-        $decodedMsg = toBytes($msg);
-    
-        $encryptedMsg = $publicKey->encrypt($decodedMsg);
-    
-        return toHex($encryptedMsg);
-    }
-    
-    function rsaPrivateDecrypt($encryptedMsgHex, $privateKey) {
-        $encryptedMsg = fromHex($encryptedMsgHex);
-    
-        $decryptedMsg = $privateKey->decrypt($encryptedMsg);
 
-        return $decryptedMsg;
+    function encrypt_data($req, $key) {
+        $json_data = json_encode($req);
+        $encrypted_data = aes_encrypt_cbc($json_data, $key);
+        $base64_encoded_data = toString(base64_encode($encrypted_data));
+        return $base64_encoded_data;
     }
     
-    function rsaSign($message, $privateKey) {
-        $signature = $privateKey->sign(toBytes($message));
-        return toHex($signature);
-    }
-    
-    function rsaVerify($sign, $message, $publicKey) {
-        $decodedSign = fromHex($sign);
-        return $publicKey->verify(toBytes($message), $decodedSign);
+    function decrypt_data($encrypted_request, $key) {
+        $encrypted_data = base64_decode($encrypted_request);
+        $decrypted_data = aes_decrypt_cbc($encrypted_data, $key);
+        $json_data = json_decode($decrypted_data, true);
+        return $json_data;
     }
 }

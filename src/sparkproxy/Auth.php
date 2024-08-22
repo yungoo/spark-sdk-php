@@ -1,31 +1,20 @@
 <?php
 namespace SparkProxy;
 
-use Ramsey\Uuid\Uuid;
-use phpseclib3\Crypt\RSA;
-
 class Auth
 {
     private $supplierNo;
-    private $privateKey;
-    private $publicKey;
+    private $secretKey;
 
-    public function __construct($supplierNo, $privateKey, $publicKey = null)
+    public function __construct($supplierNo, $secretKey)
     {
-        $err = $this->checkKey($supplierNo, $privateKey);
+        $err = $this->checkKey($supplierNo, $secretKey);
         if ($err !== null) {
             throw new \Exception($err);
         }
         
         $this->supplierNo = $supplierNo;
-        $this->privateKey = rsaLoadPemPrivateKey($privateKey);
-        $this->privateKey = $this->privateKey->withPadding(RSA::ENCRYPTION_PKCS1 | RSA::SIGNATURE_PKCS1);
-
-        $publicKey = $publicKey ?? Config::PUBLIC_KEY;
-        if ($publicKey !== null) {
-            $this->publicKey = rsaLoadPemPublicKey($publicKey);
-            $this->publicKey = $this->publicKey->withPadding(RSA::ENCRYPTION_PKCS1 | RSA::SIGNATURE_PKCS1);
-        }
+        $this->secretKey = $secretKey;
     }
 
     public function getSupplierNo()
@@ -33,54 +22,22 @@ class Auth
         return $this->supplierNo;
     }
 
-    public function getPrivateKey()
+    private function checkKey($supplierNo, $secretKey)
     {
-        return $this->privateKey;
-    }
-
-    public function tokenOfRequest($req)
-    {
-        $message = 'supplierNo=' . $req['supplierNo'] . '&timestamp=' . $req['timestamp'];
-        return rsaSign($message, $this->privateKey);
-    }
-
-    private function checkKey($supplierNo, $privateKey)
-    {
-        if (empty($supplierNo) || empty($privateKey)) {
+        if (empty($supplierNo) || empty($secretKey)) {
              return 'Invalid key';
         }
         return null;
     }
 
-    public function encryptUsingRemotePublicKey($msg)
+    public function encryptParams($msg)
     {
-        return rsaPublicEncrypt($msg, $this->publicKey);
+        return encrypt_data($msg, $this->secretKey);
     }
 
-    public function decryptUsingPrivateKey($encryptMsg)
+    public function decryptParams($encryptMsg)
     {
-        return rsaPrivateDecrypt($encryptMsg, $this->privateKey);
-    }
-
-    public function verifyCallback($supplierNo, $sign, $reqId, $timestamp)
-    {
-        if (empty($supplierNo)) {
-            return "签名参数supplierNo未提供。reqId: $reqId";
-        }
-        if (empty($sign)) {
-            return "签名参数sign未提供。reqId: $reqId";
-        }
-        if (time() - $timestamp > 600) {
-            return "签名已过期。reqId: $reqId";
-        }
-
-        $strToSign = "supplierNo=$supplierNo&timestamp=$timestamp";
-
-        $ret = rsaVerify($sign, $strToSign, $this->publicKey);
-        if (!$ret) {
-            return "签名验证失败。reqId: $reqId";
-        }
-        return null;
+        return decrypt_data($encryptMsg, $this->secretKey);
     }
 
 }
