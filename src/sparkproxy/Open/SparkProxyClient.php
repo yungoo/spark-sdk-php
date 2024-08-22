@@ -7,7 +7,6 @@ use SparkProxy\Config;
 use SparkProxy\Http\Error;
 use SparkProxy\Http\Client;
 use SparkProxy\Http\Proxy;
-use Ramsey\Uuid\Uuid;
 
 class SparkProxyClient
 {
@@ -166,7 +165,7 @@ class SparkProxyClient
     }
 
     /**
-     * get flow balance
+     * init proxy user, return old if exits
      * 
      * @param String $userId customer userId unique
      * @param String $name user nick name, optional
@@ -184,7 +183,7 @@ class SparkProxyClient
     }
 
     /**
-     * get flow balance
+     * get proxy user
      * 
      * @param String $userId username 
      *
@@ -200,7 +199,7 @@ class SparkProxyClient
     }
 
     /**
-     * recharge flow, will create a new order for proxy ips
+     * recharge flow, will create a new order
      * 
      * @param String $userId userId of customer
      * @param String $reqOrderNo order number
@@ -218,7 +217,7 @@ class SparkProxyClient
     }
 
     /**
-     * recharge flow, will create a new order for proxy ips
+     * get recharge records
      * 
      * @param String $reqOrderNo order number
      */
@@ -250,9 +249,9 @@ class SparkProxyClient
     }
 
     /**
-     * get flow endpoint
+     * get proxy endpoints
      * 
-     * @param String $area_code country/area code of flow endpoint
+     * @param String $area_code country/area code of proxy endpoint, no need to fill
      * 
      */
     public function getProxyEndpoints(String $area_code)
