@@ -199,6 +199,26 @@ class SparkProxyClient
     }
 
     /**
+     * list proxy user 
+     * 
+     * @param String $userId username 
+     * @param int $page page number, start from 1
+     * @param int $pageSize page size, default 100
+     *
+     * @return Array total, page, list
+     *
+     */
+    public function listProxyUser(String $name, int $page, int $pageSize)
+    {
+        list($ret, $err) = $this->post('ListProxyUser', array(
+            "name" => $name,
+            "page" => $page,
+            "pageSize" => $pageSize
+        ));
+        return array($ret, $err);
+    }
+
+    /**
      * recharge flow, will create a new order
      * 
      * @param String $userId userId of customer
@@ -226,6 +246,30 @@ class SparkProxyClient
         return $this->post('RechargeTraffic', array(
             "reqOrderNo" => $reqOrderNo,
         ));
+    }
+
+     /**
+     * list user traffic recharge records
+     * 
+     * @param String $userId user id
+     * @param String $startTime start time
+     * @param String $endTime end time
+     * @param int $page page number, start from 1
+     * @param int $pageSize page size, default 100
+     * 
+     * @return Array total, page, list
+     *
+     */
+    public function listTrafficRechargeRecords(String $userId, String $startTime, String $endTime, int $page, int $pageSize)
+    {
+        list($ret, $err) = $this->post('ListTrafficRechargeRecord', array(
+            "reqUserId" => $userId,
+            "startTime" => $startTime,
+            "endTime" => $endTime,
+            "page" => $page,
+            "pageSize" => $pageSize
+        ));
+        return array($ret, $err);
     }
 
     /**

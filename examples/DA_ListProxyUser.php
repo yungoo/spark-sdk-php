@@ -1,0 +1,14 @@
+<?php
+require_once __DIR__ . '/../autoload.php';
+require 'initialize_client.php';
+
+// get all instances of a specific order
+$name="";
+$page=1;
+$pageSize=100;
+list($ret, $err) = $client->ListProxyUser($name, $page, $pageSize);
+if ($err != null) {
+    var_dump($err);
+    exit;
+}
+var_dump($ret);
