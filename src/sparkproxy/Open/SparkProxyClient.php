@@ -306,15 +306,87 @@ class SparkProxyClient
     }
 
     /**
+     * list paginate ip segment (CIDR) list
+     *
+     * @param String $cidr fuzzy search for CIDR
+     * @param String $countryCode country code
+     * @param String $stateCode state code
+     * @param String $cityCode city code
+     * @param int $page page number, start from 1
+     * @param int $pageSize page size, default 100
+     *
+     * @return Array total, page, list
+     *          data (array)
+     *              total (int): 总数
+     *              page (int): 当前分页
+     *              list (array): 列表
+     *                  cidr (str): ip
+     *                  countryName (str): 国家名称
+     *                  stateName (str): 省州名称
+     *                  cityName (str): 城市名称
+     *                  total (int): 总IP数据
+     *                  remains (int): 剩余IP数
+     *                  used (int): 已用用IP数
+     *                  cooldown (int): 冷却期IP数
+     *                  accounts (int): 正在使用的账户数
+     */
+    public function customListCidrInfo($cidr, $countryCode, $stateCode, $cityCode, $page, $pageSize) 
+    {
+        return $this->post('CustomQueryAreaCidrList', array(
+            "cidr" => $cidr,
+            "countryCode" => $countryCode,
+            "stateCode" => $stateCode,
+            "cityCode" => $cityCode,
+            "page" => $page,
+            "pageSize" => $pageSize
+        ));
+    }
+
+    /**
+     * list paginate ip detail list
+     *
+     * @param String $cidr fuzzy search for CIDR
+     * @param int $page page number, start from 1
+     * @param int $pageSize page size, default 100
+     *
+     * @return Array total, page, list
+     *          data (array)
+     *              total (int): 总数
+     *              page (int): 当前分页
+     *              list (array): 列表
+     *                  ip (str): ip
+     *                  countryCode (str): 国家代码
+     *                  countryName (str): 国家名称
+     *                  stateCode (str): 省洲代码
+     *                  stateName (str): 省州名称
+     *                  cityCode (str): 城市代码
+     *                  cityName (str): 城市名称
+     *                  enabled (bool): 是否有效
+     *                  state (int): 状态, 0-free 1-locked 2-used 3-cooldown
+     *                  autoUnlockAt (str): 自动解锁时间
+     *                  accounts (int): 正在使用的账户数
+     */
+    public function customListCidrIps($cidr, $page, $pageSize) 
+    {
+        return $this->post('CustomListCidrIps', array(
+            "cidr" => $cidr,
+            "page" => $page,
+            "pageSize" => $pageSize
+        ));
+    }
+
+
+    /**
      * direct create proxy instance
      *
      * @param String $reqOrderNo order number
      */
-    public function customCreateProxy(String $reqOrderNo, Array $ips)
+    public function customCreateProxy(String $reqOrderNo, array $ips, bool $shareable)
     {
         return $this->post('CustomCreateProxy', array(
             "reqOrderNo" => $reqOrderNo,
-            "ips" => $ips
+            "ips" => $ips,
+            "shareable" => $shareable
         ));
     }
 
