@@ -137,13 +137,17 @@ class SparkProxyClient
      * get proxy order
      * 
      * @param String $reqOrderNo order number
-     * 
+     * @param int $page page number, start from 1
+     * @param int $pageSize page size, default 100
+     *  
      * @return Array password will autodecrypt
      */
-    public function getOrder(String $reqOrderNo)
+    public function getOrder(String $reqOrderNo, int $page=1, int $pageSize=100)
     {
         list($ret, $info) = $this->post('GetOrder', array(
-            "reqOrderNo" => $reqOrderNo
+            "reqOrderNo" => $reqOrderNo,
+            "page" => $page,
+            "pageSize" => $pageSize
         ));
         return array($ret, $info);
     }
