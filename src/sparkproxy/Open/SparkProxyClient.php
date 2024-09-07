@@ -83,22 +83,23 @@ class SparkProxyClient
      * create proxy, will create a new order for proxy ips
      * 
      * @param String $reqOrderNo order number
+     * @param String $productId product id
      * @param int $duration duration of proxy, unit: day
      * @param int $unit unit of duration, 1: day, 2: week, 3: month, according to the product destail
-     * @param array items 
-     *              String String $productId product id
-     *              int $amount amount of proxy
-     *              String $countryCode country code 
-     *              String $areaCode area code, can be empty, state code
-     *              String $cityCode city code, can ben empty
+     * @param array $rules 
+     *              bool exclue exclude the ip segment, false-not in  true-in
+     *              String cidr ip段，如 154.111.102.0/24
+     *              int quantity quantity of proxy
      */
-    public function createProxy(String $reqOrderNo, int $duration, int $unit, array $items)
+    public function createProxy(String $reqOrderNo, String $productId, int $quantity, int $duration, int $unit, array $rules)
     {
         return $this->post('CreateProxy', array(
             "reqOrderNo" => $reqOrderNo,
+            "productId" => $productId,
+            "amount" => $quantity,
             "duration" => $duration,
             "unit" => $unit,
-            "items" => $items
+            "rules" => $rules || []
         ), "2024-05-19");
     }
 
@@ -379,6 +380,20 @@ class SparkProxyClient
         ));
     }
 
+    /**
+     * update ips status
+     *
+     * @param array $ips ip array
+     * @param bool $enabled enabled or not
+     * 
+     * @return None or error
+     */
+    public function customUpdateIpStatus(array $ips, bool $enabled) {
+        return $this->post('CustomUpdateIpStatus', array(
+            "ips" => $ips,
+            "enabled" => $enabled
+        ));
+    }
 
     /**
      * direct create proxy instance

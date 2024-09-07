@@ -6,7 +6,7 @@ use SparkProxy\Config;
 use SparkProxy\Open\SparkProxyClient;
 
 $supplierNo = 'test0001';
-$secretKey = 'qwertyuiop123456op123456';
+$secretKey = 'qwertyuiop123456op123456op123456';
 
 $auth = new Auth($supplierNo, $secretKey);
 $client = new SparkProxyClient($auth, Config::DEV_API_HOST);

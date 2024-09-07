@@ -219,18 +219,39 @@ if (!defined('SPARKPROXY_FUNCTIONS_VERSION')) {
     function toHex($data) {
         return bin2hex($data);
     }
+
+    function detect_cipher_mode($key) {
+        // Determine key length and select appropriate AES mode
+        $keyLength = strlen($key);
+        switch ($keyLength) {
+            case 16: // 128-bit
+                $cipherMode = 'aes-128-cbc';
+                break;
+            case 24: // 192-bit
+                $cipherMode = 'aes-192-cbc';
+                break;
+            case 32: // 256-bit
+                $cipherMode = 'aes-256-cbc';
+                break;
+            default:
+                throw new \Exception("Unsupported key length: Keys must be 16, 24, or 32 bytes long");
+        }
+        return $cipherMode;
+    }
     
     function aes_encrypt_cbc($plaintext, $key) {
-        $blockSize = openssl_cipher_iv_length('aes-192-cbc');
+        $cipherMode = detect_cipher_mode($key);
+        $blockSize = openssl_cipher_iv_length($cipherMode);
         $iv = substr($key, 0, $blockSize);
-        $encrypted = openssl_encrypt($plaintext, 'aes-192-cbc', $key, OPENSSL_RAW_DATA, $iv);
+        $encrypted = openssl_encrypt($plaintext, $cipherMode, $key, OPENSSL_RAW_DATA, $iv);
         return $encrypted;
     }
     
     function aes_decrypt_cbc($ciphertext, $key) {
-        $blockSize = openssl_cipher_iv_length('aes-192-cbc');
+        $cipherMode = detect_cipher_mode($key);
+        $blockSize = openssl_cipher_iv_length($cipherMode);
         $iv = substr($key, 0, $blockSize);
-        $plaintext = openssl_decrypt($ciphertext, 'aes-192-cbc', $key, OPENSSL_RAW_DATA, $iv);
+        $plaintext = openssl_decrypt($ciphertext, $cipherMode, $key, OPENSSL_RAW_DATA, $iv);
         if ($plaintext === false) {
             throw new \Exception("Invalid padding or secret key");
         }

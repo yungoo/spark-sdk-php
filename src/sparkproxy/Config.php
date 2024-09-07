@@ -4,7 +4,7 @@ namespace SparkProxy;
 
 final class Config
 {
-    const SDK_VER = '0.4.4';
+    const SDK_VER = '0.4.6';
 
     const API_HOST = 'https://oapi.sparkproxy.com';
     const QA_API_HOST = 'http://8.130.48.76:16801';
