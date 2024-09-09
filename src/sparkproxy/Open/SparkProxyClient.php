@@ -399,13 +399,19 @@ class SparkProxyClient
      * direct create proxy instance
      *
      * @param String $reqOrderNo order number
+     * @param array $ips ip array
+     * @param bool $shareable shareable or not
+     * @param int $duration duration of proxy, unit: day
+     * @param int $unit unit of duration, 1: day, 2: week, 3: month, according to the product destail
      */
-    public function customCreateProxy(String $reqOrderNo, array $ips, bool $shareable)
+    public function customCreateProxy(String $reqOrderNo, array $ips, bool $shareable, int $duration, int $unit)
     {
         return $this->post('CustomCreateProxy', array(
             "reqOrderNo" => $reqOrderNo,
             "ips" => $ips,
-            "shareable" => $shareable
+            "shareable" => $shareable,
+            "duration" => $duration,
+            "unit" => $unit
         ));
     }
 
