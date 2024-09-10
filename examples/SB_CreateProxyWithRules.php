@@ -16,8 +16,8 @@ if ($err == null) {
 
         // # CASE-1.2: 从指定IP段之外抽取指定数量段IP
         // if (count($cidrBlocks) > 0) {
-        //     $rules[] = array("exclude" => true, "cidrBlock" => $cidrBlocks[0]["cidr"], "count" => 2);
-        // }
+        //     $rules[] = array("exclude" => true, "cidr" => $cidrBlocks[0]["cidr"], "count" => 1);
+        // } 
 
         // # CASE-1.3: 从指定IP段抽取指定数量段IP, 从指定IP段之外抽取指定数量段IP
         // if (count($cidrBlocks) > 1) {
@@ -46,6 +46,7 @@ if ($err == null) {
         // if (count($cidrBlocks) > 0) {
         //     $rules[] = array("cidrBlock" => "192.168.1.0/24", "count" => 2);
         // }
+        
 
         list($ret, $err) = $client->createProxy(generate_order_id(),  $product["productId"], 2, $product["duration"], $product["unit"], $rules);
         if ($err !== null) {

@@ -99,8 +99,8 @@ class SparkProxyClient
             "amount" => $quantity,
             "duration" => $duration,
             "unit" => $unit,
-            "rules" => $rules || []
-        ), "2024-05-19");
+            "cidrBlocks" => $rules ?? []
+        ));
     }
 
     /**
