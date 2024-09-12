@@ -89,7 +89,7 @@ class SparkProxyClient
      * @param array $rules 
      *              bool exclue exclude the ip segment, false-not in  true-in
      *              String cidr ip段，如 154.111.102.0/24
-     *              int quantity quantity of proxy
+     *              int count quantity of proxy
      */
     public function createProxy(String $reqOrderNo, String $productId, int $quantity, int $duration, int $unit, array $rules)
     {
@@ -108,6 +108,7 @@ class SparkProxyClient
      * 
      * @param String $reqOrderNo new order number
      * @param Array $instances [{instanceId: '', duration: 30, unit: 1}] all instance must in same order & duration * unit should be equals.
+     *                 unit: 1: day, 2: week, 3: month, 4: year, according to the product destail
      * @return Array
      */
     public function renewProxy(String $reqOrderNo, Array $instances)
@@ -413,6 +414,24 @@ class SparkProxyClient
             "duration" => $duration,
             "unit" => $unit
         ));
+    }
+
+    /**
+     * custom renew proxy, will extends the exipration of instance
+     * 
+     * @param String $reqOrderNo new order number
+     * @param Array $instances [{account: '', duration: 30, unit: 1}] all instance must in same order & duration * unit should be equals.
+     *                 account: ip:port:user:password
+     *                 unit: 1: day, 2: week, 3: month, 4: year, according to the product destail
+     * @return Array
+     */
+    public function customRenewProxy(String $reqOrderNo, Array $instances)
+    {
+        list($ret, $info) = $this->post('CustomRenewProxy', array(
+            "reqOrderNo" => $reqOrderNo,
+            "instances" => $instances
+        ));
+        return array($ret, $info);
     }
 
     /**
