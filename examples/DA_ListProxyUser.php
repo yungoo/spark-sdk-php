@@ -11,4 +11,10 @@ if ($err != null) {
     var_dump($err);
     exit;
 }
-var_dump($ret);
+// var_dump($ret);
+
+foreach ($ret['data']['list'] as $user) {
+    if ($user['username'] == 'sp66e416f7272d1294b3002cba') {
+        var_dump($user);   
+    }    
+}

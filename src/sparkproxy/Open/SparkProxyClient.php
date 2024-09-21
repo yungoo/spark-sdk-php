@@ -443,7 +443,7 @@ class SparkProxyClient
     {
         return $this->post('CustomDelProxy', array(
             "reqOrderNo" => $reqOrderNo,
-            "ips" => $accounts
+            "accounts" => $accounts
         ));
     }
 
