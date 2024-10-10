@@ -643,20 +643,22 @@ class SparkProxyClient
      * draw dynamic ips
      * 
      * @param String $subUsername sub proxy user, required
-     * @param String $region region, optional
+     * @param String|null $region region, optional
      * @param int $sessTime session time, optional
+     * @param int|null $serverId id of server, optinal
      * @param int $num number of ips, optinal
      * @param String $format format, ['user:pass:host:port', 'user:pass@host:port', 'host:port:user:pass'], optional
      * 
      * @return Array $ret, $err 
      *
      */
-    public function drawDynamicIps(String $subUsername, String $region=null, int $sessTime=5, int $num=1, String $format="user:pass:host:port")
+    public function drawDynamicIps(String $subUsername, ?String $region=null, int $sessTime=5, ?int $serverId=null, int $num=1, String $format="user:pass:host:port")
     {
         list($ret, $err) = $this->post('DrawDynamicIp', array(
             "username" => $subUsername,
             "region" => $region,
             "sessTime" => $sessTime,
+            "serverId" => $serverId,
             "num" => $num,
             "format" => $format
         ));
