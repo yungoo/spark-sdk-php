@@ -652,9 +652,9 @@ class SparkProxyClient
      * @return Array $ret, $err 
      *
      */
-    public function drawDynamicIps(String $subUsername, ?String $region=null, int $sessTime=5, ?int $serverId=null, int $num=1, String $format="user:pass:host:port")
+    public function drawDynamicProxyAccounts(String $subUsername, ?String $region=null, int $sessTime=5, ?int $serverId=null, int $num=1, String $format="user:pass:host:port")
     {
-        list($ret, $err) = $this->post('DrawDynamicIp', array(
+        list($ret, $err) = $this->post('DrawDynamicProxyAccounts', array(
             "username" => $subUsername,
             "region" => $region,
             "sessTime" => $sessTime,
@@ -664,4 +664,5 @@ class SparkProxyClient
         ));
         return array($ret, $err);
     }
+
 }

@@ -9,7 +9,7 @@ $serverId=1;
 $num=100;
 $format="user:pass@host:port";
 
-list($ret, $err) = $client->drawDynamicIps($subUsername, $region, $sessTime, $serverId, $num, $format);
+list($ret, $err) = $client->drawDynamicProxyAccounts($subUsername, $region, $sessTime, $serverId, $num, $format);
 if ($err != null) {
     var_dump($err);
     exit;
