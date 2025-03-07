@@ -7,7 +7,7 @@
 
 ## 安装
 
-推荐使用 `composer` 进行安装。可以使用 composer.json 声明依赖，或者运行下面的命令。SDK 包已经放到这里 [`sparkproxy/php-sdk`][install-packagist] 。
+推荐使用 `composer` 进行安装。可以使用 composer.json 声明依赖，或者运行下面的命令。SDK 包已经放到这里 [`sparkproxy/spark-php-sdk`][install-packagist] 。
 
 ```bash
 $ composer require sparkproxy/spark-sdk-php
@@ -60,7 +60,7 @@ $ ./vendor/bin/phpunit tests/SparkProxy/Tests/
 ## 常见问题
 
 - `$error` 保留了请求响应的信息，失败情况下 `ret` 为 `none`, 将 `$error` 可以打印出来，提交给我们。
-- API 的使用 demo 可以参考 [examples](https://github.com/qiniu/php-sdk/tree/master/examples)。
+- API 的使用 demo 可以参考 [examples](https://github.com/yungoo/spark-php-sdk/tree/master/examples)。
 
 ## 代码贡献
 
