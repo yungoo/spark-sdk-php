@@ -60,7 +60,7 @@ $ ./vendor/bin/phpunit tests/SparkProxy/Tests/
 ## 常见问题
 
 - `$error` 保留了请求响应的信息，失败情况下 `ret` 为 `none`, 将 `$error` 可以打印出来，提交给我们。
-- API 的使用 demo 可以参考 [examples](https://github.com/yungoo/spark-php-sdk/tree/master/examples)。
+- API 的使用 demo 可以参考 [examples](https://github.com/yungoo/spark-sdk-php/tree/master/examples)。
 
 ## 代码贡献
 
