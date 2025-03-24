@@ -665,4 +665,21 @@ class SparkProxyClient
         return array($ret, $err);
     }
 
+    /**
+     * query stats data
+     * 
+     * @param int $proxyType 104
+     * @param String $productId sku, required 
+     * 
+     * @return Array $ret, $err 
+     *
+     */
+    public function queryData(String $sql)
+    {
+        list($ret, $err) = $this->post('QueryData', array(
+            "sql" => $sql
+        ));
+        return array($ret, $err);
+    }
+
 }
