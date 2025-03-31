@@ -12,6 +12,7 @@ class SparkProxyClient
 {
     use StaticProxyTrait;
     use CustomProxyTrait;
+    use ResiProxyTrait;
     use SuperResiProxyTrait;
     use MgrProxyTrait;
 
