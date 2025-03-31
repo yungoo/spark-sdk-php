@@ -9,7 +9,7 @@ $cidr = "";
 $page=1;
 $pageSize=20;
 
-list($ret, $err) = $client->customListCidrInfo($cidr, $countryCode, $stateCode, $cityCode, $page, $pageSize);
+list($ret, $err) = $client->listCidrInfo($cidr, $countryCode, $stateCode, $cityCode, $page, $pageSize);
 if ($err != null) {
     var_dump($err);
     exit;
@@ -18,7 +18,7 @@ var_dump($ret);
 
 if (count($ret['data']['list']) > 0) {
     $cidr = $ret['data']['list'][0]['cidr'];
-    list($ret, $err) = $client->customListCidrIps($cidr, $page, $pageSize);
+    list($ret, $err) = $client->listCidrIps($cidr, $page, $pageSize);
     if ($err != null) {
         var_dump($err);
         exit;

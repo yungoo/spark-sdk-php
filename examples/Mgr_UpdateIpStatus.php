@@ -5,7 +5,7 @@ require 'initialize_client.php';
 $ips=['154.62.162.3'];
 $enabled=true; //true or false
 
-list($ret, $err) = $client->customUpdateIpStatus($ips, $enabled);
+list($ret, $err) = $client->updateIpsEnabled($ips, $enabled);
 if ($err != null) {
     var_dump($err);
     exit;
