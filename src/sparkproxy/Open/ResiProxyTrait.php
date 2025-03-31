@@ -2,7 +2,7 @@
 
 namespace SparkProxy\Open;
 
-class ResiProxyTrait
+trait ResiProxyTrait
 { 
     /**
      * create proxy user
