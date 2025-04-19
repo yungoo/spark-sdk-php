@@ -6,6 +6,68 @@ trait MgrProxyTrait
 {
 
     /**
+     * 添加IP段
+     *
+     * @param string $countryCode 国家代码
+     * @param string $stateCode 省州代码 
+     * @param string $cityCode 城市代码
+     * @param string $address IP地址
+     * @param int $port 端口号
+     * @param int $netType 网络类型(1原生 2广播)
+     * @param string $asn ASN编号
+     * @param string $isp ISP运营商名称
+     *
+     * @return array 包含返回数据和错误信息
+     *          - result (array): 
+     *              serverId (int): 服务器ID
+     *              countryCode (str): 国家代码
+     *              stateCode (str): 省州代码
+     *              cityCode (str): 城市代码
+     *              address (str): IP地址
+     *              port (int): 端口号
+     *              netType (int): 网络类型
+     *              asn (str): ASN编号
+     *              isp (str): ISP运营商
+     *          - error (string|null): 错误信息
+     */
+    public function addCidr($countryCode, $stateCode, $cityCode, $address, $port, $netType, $asn = '', $isp = '')
+    {
+        list($ret, $err) = $this->post('MgrAddCidr', array(
+            "countryCode" => $countryCode,
+            "stateCode" => $stateCode,
+            "cityCode" => $cityCode,
+            "address" => $address,
+            "port" => $port,
+            "netType" => $netType,
+            "asn" => $asn,
+            "isp" => $isp
+        ));
+        return array($ret, $err);
+    }
+
+    /**
+     * 批量添加静态IP
+     *
+     * @param int $serverId 服务器ID
+     * @param array $ips IP列表，每个元素为关联数组包含:
+     *              - ip (string): IP地址
+     *              - enabled (bool): 是否启用
+     *
+     * @return array 包含返回数据和错误信息
+     *          - result (array): 成功返回空数组，失败返回错误信息
+     *          - error (string|null): 错误信息
+     */
+    public function saveCidrIps($serverId, $ips)
+    {
+        list($ret, $err) = $this->post('MgrSaveCidrIps', array(
+            "serverId" => $serverId,
+            "ips" => $ips
+        ));
+        return array($ret, $err);
+    }
+
+    
+    /**
      * List paginated IP segment (CIDR) list
      *
      * @param string $cidr Fuzzy search for CIDR
