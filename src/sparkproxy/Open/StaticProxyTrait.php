@@ -50,6 +50,33 @@ trait StaticProxyTrait
     }
 
     /**
+     * create proxy, will create a new order for proxy ips
+     * 
+     * @param String $reqOrderNo order number
+     * @param int $duration duration of proxy, unit: day
+     * @param int $unit unit of duration, 1: day, 2: week, 3: month, according to the product destail
+     * @param array items 
+     *              String String $productId product id
+     *              int $amount amount of proxy
+     *              String $countryCode country code 
+     *              String $areaCode area code, can be empty, state code
+     *              String $cityCode city code, can ben empty
+     * @param String $cid optional customer id who will filter history ips
+     * @param String $cname optional customer name
+     */
+    public function createProxy2(String $reqOrderNo, int $duration, int $unit, array $items, String $cid, String $cname)
+    {
+        return $this->post('CreateProxy', array(
+            "reqOrderNo" => $reqOrderNo,
+            "duration" => $duration,
+            "unit" => $unit,
+            "items" => $items,
+            "cid" => $cid,
+            "cname" => $cname
+        ), "2024-05-19");
+    }
+
+    /**
      * renew proxy, will extends the exipration of instance
      * 
      * @param String $reqOrderNo new order number
