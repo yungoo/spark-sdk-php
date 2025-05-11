@@ -176,7 +176,7 @@ trait MgrProxyTrait
      * Bind multiple products to specified IP segment
      * 
      * @param int $serverId IP segment ID
-     * @param array $productIds Array of product IDs
+     * @param array $productIds Array of product sku list
      * 
      * @return array Contains return data and error
      *          - result (array): Empty on success

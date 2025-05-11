@@ -32,8 +32,10 @@ trait StaticProxyTrait
      *              bool exclue exclude the ip segment, false-not in  true-in
      *              String cidr ip段，如 154.111.102.0/24
      *              int count quantity of proxy
+     * @param String $cid optional customer id who will filter history ips
+     * @param String $cname optional customer name
      */
-    public function createProxy(String $reqOrderNo, String $productId, int $quantity, int $duration, int $unit, array $rules)
+    public function createProxy(String $reqOrderNo, String $productId, int $quantity, int $duration, int $unit, array $rules, String $cid, String $cname)
     {
         return $this->post('CreateProxy', array(
             "reqOrderNo" => $reqOrderNo,
@@ -41,7 +43,9 @@ trait StaticProxyTrait
             "amount" => $quantity,
             "duration" => $duration,
             "unit" => $unit,
-            "cidrBlocks" => $rules ?? []
+            "cidrBlocks" => $rules ?? [],
+            "cid" => $cid,
+            "cname" => $cname
         ));
     }
 
