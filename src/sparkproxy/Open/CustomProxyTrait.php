@@ -19,16 +19,23 @@ trait CustomProxyTrait
      * @param bool $shareable shareable or not
      * @param int $duration duration of proxy, unit: day
      * @param int $unit unit of duration, 1: day, 2: week, 3: month, according to the product destail
+     * @param ?array $customer optional customer/order info, array with optional keys: agent (string), customer (string), coupon (string), amount (string)
      */
-    public function customCreateProxy(String $reqOrderNo, array $ips, bool $shareable, int $duration, int $unit)
+    public function customCreateProxy(String $reqOrderNo, array $ips, bool $shareable, int $duration, int $unit, ?array $customer = null)
     {
-        return $this->post('CustomCreateProxy', array(
+        $payload = array(
             "reqOrderNo" => $reqOrderNo,
             "ips" => $ips,
             "shareable" => $shareable,
             "duration" => $duration,
             "unit" => $unit
-        ));
+        );
+
+        if ($customer !== null) {
+            $payload["customer"] = $customer;
+        }
+
+        return $this->post('CustomCreateProxy', $payload);
     }
 
     /**

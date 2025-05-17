@@ -23,57 +23,75 @@ trait StaticProxyTrait
 
     /**
      * create proxy, will create a new order for proxy ips
-     * 
+     *
      * @param String $reqOrderNo order number
      * @param String $productId product id
+     * @param int $quantity quantity of proxy
      * @param int $duration duration of proxy, unit: day
      * @param int $unit unit of duration, 1: day, 2: week, 3: month, according to the product destail
-     * @param array $rules 
+     * @param array $rules
      *              bool exclue exclude the ip segment, false-not in  true-in
      *              String cidr ip段，如 154.111.102.0/24
      *              int count quantity of proxy
-     * @param String $cid optional customer id who will filter history ips
-     * @param String $cname optional customer name
+     * @param ?String $cid optional customer id who will filter history ips
+     * @param ?array $customer optional customer/order info，arrary with optional keys：agent (string), customer (string), coupon (string), amount (string)
      */
-    public function createProxy(String $reqOrderNo, String $productId, int $quantity, int $duration, int $unit, array $rules, String $cid, String $cname)
+    public function createProxy(String $reqOrderNo, String $productId, int $quantity, int $duration, int $unit, array $rules, ?String $cid = null, ?array $customer = null)
     {
-        return $this->post('CreateProxy', array(
+        $payload = array(
             "reqOrderNo" => $reqOrderNo,
             "productId" => $productId,
             "amount" => $quantity,
             "duration" => $duration,
             "unit" => $unit,
             "cidrBlocks" => $rules ?? [],
-            "cid" => $cid,
-            "cname" => $cname
-        ));
+        );
+
+        if ($cid !== null) {
+            $payload["cid"] = $cid;
+        }
+
+        if ($customer !== null) {
+            $payload["customer"] = $customer;
+        }
+
+        return $this->post('CreateProxy', $payload);
     }
 
     /**
      * create proxy, will create a new order for proxy ips
-     * 
+     *
      * @param String $reqOrderNo order number
      * @param int $duration duration of proxy, unit: day
      * @param int $unit unit of duration, 1: day, 2: week, 3: month, according to the product destail
-     * @param array items 
+     * @param array items
      *              String String $productId product id
      *              int $amount amount of proxy
-     *              String $countryCode country code 
+     *              String $countryCode country code
      *              String $areaCode area code, can be empty, state code
      *              String $cityCode city code, can ben empty
-     * @param String $cid optional customer id who will filter history ips
-     * @param String $cname optional customer name
+     * @param ?String $cid optional customer id who will filter history ips
+     * @param ?array $customer optional customer/order info, array with optional keys: agent (string), customer (string), coupon (string), amount (string)
      */
-    public function createProxy2(String $reqOrderNo, int $duration, int $unit, array $items, String $cid, String $cname)
+    public function createProxy2(String $reqOrderNo, int $duration, int $unit, array $items, ?String $cid = null, ?array $customer = null)
     {
-        return $this->post('CreateProxy', array(
+        $payload = array(
             "reqOrderNo" => $reqOrderNo,
             "duration" => $duration,
             "unit" => $unit,
             "items" => $items,
-            "cid" => $cid,
-            "cname" => $cname
-        ), "2024-05-19");
+            // cid and customer added conditionally below
+        );
+
+        if ($cid !== null) {
+            $payload["cid"] = $cid;
+        }
+
+        if ($customer !== null) {
+            $payload["customer"] = $customer;
+        }
+
+        return $this->post('CreateProxy', $payload, "2024-05-19");
     }
 
     /**
