@@ -262,6 +262,27 @@ trait MgrProxyTrait
         return array($ret, $err);
     }
 
+     /**
+     * 补偿代理IP有效期
+     *
+     * @param int $accountId 账户ID
+     * @param array $ips 需要补偿的IP地址列表
+     * @param int $days 需要补偿的天数
+     *
+     * @return array 包含返回数据和错误信息
+     *          - result (array): 成功时返回的数据 (例如空数组)
+     *          - error (string|null): 错误信息
+     */
+    public function compensateProxy(int $accountId, array $ips, int $days)
+    {
+        list($ret, $err) = $this->post('MgrCompensateProxy', array(
+            "accountId" => $accountId,
+            "ips" => $ips,
+            "days" => $days
+        ));
+        return array($ret, $err);
+    }
+    
     /**
      * Query stats data
      * 
