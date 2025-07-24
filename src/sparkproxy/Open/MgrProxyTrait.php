@@ -341,4 +341,21 @@ trait MgrProxyTrait
             "pageSize" => $pageSize
         ]);
     }
+    
+    public function listProducts(int $proxyType, String $countryCode = null, String $areaCode = null, 
+        String $cityCode = null, String $productId="", $isp=null, $netType=0, $keywords="", int $page=1, $pageSize=100)
+    {
+        return $this->post('MgrListProducts', [
+            "proxyType" => $proxyType,
+            "countryCode" => $countryCode ?? '',
+            "areaCode" => $areaCode ?? '',
+            "cityCode" => $cityCode ?? '',
+            "sku" => $productId ?? '',
+            "isp" => $isp ?? '',
+            "netType" => $netType ?? 0,
+            "keywords" => $keywords ?? '',
+            "page" => $page,
+            "pageSize" => $pageSize
+        ]);
+    }
 }
