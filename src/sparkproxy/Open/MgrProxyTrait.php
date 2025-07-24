@@ -4,18 +4,17 @@ namespace SparkProxy\Open;
 
 trait MgrProxyTrait
 {
-
     /**
      * 添加IP段
      *
      * @param string $countryCode 国家代码
-     * @param string $stateCode 省州代码 
+     * @param string $stateCode 省州代码
      * @param string $cityCode 城市代码
      * @param string $address IP地址
      * @param int $port 端口号
      * @param int $netType 网络类型(1原生 2广播)
-     * @param string $asn ASN编号
-     * @param string $isp ISP运营商名称
+     * @param string $asn ASN编号 (可选)
+     * @param string $isp ISP运营商名称 (可选)
      *
      * @return array 包含返回数据和错误信息
      *          - result (array): 
@@ -30,9 +29,9 @@ trait MgrProxyTrait
      *              isp (str): ISP运营商
      *          - error (string|null): 错误信息
      */
-    public function addCidr($countryCode, $stateCode, $cityCode, $address, $port, $netType, $asn = '', $isp = '')
+    public function addServer($countryCode, $stateCode, $cityCode, $address, $port, $netType, $asn = '', $isp = '')
     {
-        list($ret, $err) = $this->post('MgrAddCidr', array(
+        return $this->post('MgrAddServer', [
             "countryCode" => $countryCode,
             "stateCode" => $stateCode,
             "cityCode" => $cityCode,
@@ -41,41 +40,38 @@ trait MgrProxyTrait
             "netType" => $netType,
             "asn" => $asn,
             "isp" => $isp
-        ));
-        return array($ret, $err);
+        ]);
     }
 
     /**
      * 批量添加静态IP
      *
      * @param int $serverId 服务器ID
-     * @param array $ips IP列表，每个元素为关联数组包含:
-     *              - ip (string): IP地址
-     *              - enabled (bool): 是否启用
+     * @param array $ips IP列表，每个元素为数组: ['ip' => string, 'enabled' => bool]
      *
-     * @return array 包含返回数据和错误信息
-     *          - result (array): 成功返回空数组，失败返回错误信息
-     *          - error (string|null): 错误信息
+     * @return array [result, responseInfo]
+     *         - result (array): 成功返回空数组，失败返回错误信息
+     *         - responseInfo: 请求的Response信息
      */
-    public function saveCidrIps($serverId, $ips)
+    public function saveServerIps($serverId, $ips)
     {
-        list($ret, $err) = $this->post('MgrSaveCidrIps', array(
+        return $this->post('MgrSaveServerIps', [
             "serverId" => $serverId,
             "ips" => $ips
-        ));
-        return array($ret, $err);
+        ]);
     }
 
-    
     /**
-     * List paginated IP segment (CIDR) list
+     * 分页获取所有的IP段
      *
-     * @param string $cidr Fuzzy search for CIDR
-     * @param string $countryCode Country code
-     * @param string $stateCode State code 
-     * @param string $cityCode City code
-     * @param int $page Page number, start from 1
-     * @param int $pageSize Page size, default 100
+     * @param string $cidr 模糊搜索IP段
+     * @param string $countryCode 国家代码
+     * @param string $stateCode 省州代码
+     * @param string $cityCode 城市代码
+     * @param int|null $accountId 渠道ID (可选)
+     * @param int|null $productId 商品ID (可选)
+     * @param int $page 页码(从1开始)
+     * @param int $pageSize 每页记录数(默认100)
      *
      * @return array Contains return data and error
      *          - result (array): 
@@ -97,27 +93,44 @@ trait MgrProxyTrait
      *                      remains (int): Available IP count
      *                      cooldown (int): IPs in cooldown
      *                      accounts (int): Active accounts
+     *                      boundProducts []： 关联的商品
+     *                          productId  (int): 商品ID
+     *                          name       (str): 商品名称
+     *                          region     (str): 区域代码
+     *                      assignAccounts []: 可提取的账号
+     *                          accountId （int）: 渠道ID
+     *                          name       (str): 渠道名称
      *          - error (string|null): Error message if any
      */
-    public function listCidrInfo($cidr, $countryCode, $stateCode, $cityCode, $page, $pageSize) 
-    {
-        list($ret, $err) = $this->post('MgrQueryAreaCidrList', array(
+    public function listServerInfo(
+        $cidr = '',
+        $countryCode = '',
+        $stateCode = '',
+        $cityCode = '',
+        $accountId = null,
+        $productId = null,
+        $page = 1,
+        $pageSize = 100
+    ) {
+        $params = [
             "cidr" => $cidr,
             "countryCode" => $countryCode,
             "stateCode" => $stateCode,
             "cityCode" => $cityCode,
+            "accountId" => $accountId,
+            "productId" => $productId,
             "page" => $page,
             "pageSize" => $pageSize
-        ));
-        return array($ret, $err);
+        ];
+        return $this->post('MgrQueryAreaServerList', $params);
     }
 
     /**
-     * List paginated IP detail list
+     * 获取IP段下IP列表
      *
-     * @param string $cidr Fuzzy search for CIDR
-     * @param int $page Page number, start from 1
-     * @param int $pageSize Page size, default 100
+     * @param int|null $serverId IP段ID (可选)
+     * @param int $page 页码(从1开始)
+     * @param int $pageSize 每页记录数(默认100)
      *
      * @return array Contains return data and error
      *          - result (array):
@@ -138,14 +151,14 @@ trait MgrProxyTrait
      *                      accounts (int): Active accounts
      *          - error (string|null): Error message if any
      */
-    public function listCidrIps($cidr, $page, $pageSize) 
+    public function listServerIps($serverId = null, $page = 1, $pageSize = 100)
     {
-        list($ret, $err) = $this->post('MgrListCidrIps', array(
-            "cidr" => $cidr,
+        $params = [
+            "serverId" => $serverId,
             "page" => $page,
             "pageSize" => $pageSize
-        ));
-        return array($ret, $err);
+        ];
+        return $this->post('MgrListServerIps', $params);
     }
 
     /**
@@ -164,140 +177,168 @@ trait MgrProxyTrait
      *                  currency (str): Currency type
      *          - error (string|null): Error message if any
      */
-    public function listCidrBoundProducts(int $serverId)
+    public function listServerProducts($serverId)
     {
-        list($ret, $err) = $this->post('MgrListCidrBoundProducts', array(
+        return $this->post('MgrListServerProducts', [
             "serverId" => $serverId
-        ));
-        return array($ret, $err);
+        ]);
     }
 
     /**
-     * Bind multiple products to specified IP segment
-     * 
-     * @param int $serverId IP segment ID
-     * @param array $productIds Array of product sku list
-     * 
-     * @return array Contains return data and error
-     *          - result (array): Empty on success
-     *          - error (string|null): Error message if any
+     * 绑定商品到IP段
+     *
+     * @param int $serverId IP段ID
+     * @param array $productIds 商品ID列表
+     *
+     * @return array [result, responseInfo]
+     *         - result (array): 成功返回空数组，失败返回错误信息
+     *         - responseInfo: 请求的Response信息
      */
-    public function bindCidrToProducts(int $serverId, array $productIds)
+    public function bindServerToProducts($serverId, $productIds)
     {
-        list($ret, $err) = $this->post('MgrBindCidrToProducts', array(
+        return $this->post('MgrBindServerToProducts', [
             "serverId" => $serverId,
             "productIds" => $productIds
-        ));
-        return array($ret, $err);
+        ]);
     }
 
     /**
-     * Sync inventory of products bound to IP segment
-     * 
-     * @param int $serverId IP segment server ID
-     * 
-     * @return array Contains return data and error
-     *          - result (array): Empty on success
-     *          - error (string|null): Error message if any
-     */
-    public function syncCidrBoundProductsInventory(int $serverId)
-    {
-        list($ret, $err) = $this->post('MgrSyncCidrBoundProductsInventory', array(
-            "serverId" => $serverId
-        ));
-        return array($ret, $err);
-    }
-
-    /**
-     * Update IPs status
+     * 设置可提取IP段的渠道
      *
-     * @param array $ips Array of IPs
-     * @param bool $enabled Whether to enable
-     * 
-     * @return array Contains return data and error
-     *          - result (array): Empty on success
-     *          - error (string|null): Error message if any
+     * @param int $serverId IP段ID
+     * @param array $accountIds 渠道ID列表
+     *
+     * @return array [result, responseInfo]
+     *         - result (array): 成功返回空数组，失败返回错误信息
+     *         - responseInfo: 请求的Response信息
      */
-    public function updateIpsEnabled(array $ips, bool $enabled) {
-        list($ret, $err) = $this->post('MgrUpdateIpsEnabled', array(
+    public function assignServerToAccounts($serverId, $accountIds)
+    {
+        return $this->post('MgrAssignServerToAccounts', [
+            "serverId" => $serverId,
+            "accountIds" => $accountIds
+        ]);
+    }
+
+    /**
+     * 更新IP启用状态
+     *
+     * @param array $ips IP地址列表
+     * @param bool $enabled 是否启用
+     *
+     * @return array [result, responseInfo]
+     *         - result (array): 成功返回空数组，失败返回错误信息
+     *         - responseInfo: 请求的Response信息
+     */
+    public function updateIpsEnabled($ips, $enabled)
+    {
+        return $this->post('MgrUpdateIpsEnabled', [
             "ips" => $ips,
             "enabled" => $enabled
-        ));
-        return array($ret, $err);
+        ]);
     }
 
     /**
-     * Update IPs auto offline status
+     * 更新IP自动下架状态
      *
-     * @param array $ips Array of IPs
-     * @param bool $autoOffline Whether to auto offline
-     * 
-     * @return array Contains return data and error
-     *          - result (array): Empty on success
-     *          - error (string|null): Error message if any
+     * @param array $ips IP地址列表
+     * @param bool $autoOffline 是否自动下架
+     *
+     * @return array [result, responseInfo]
+     *         - result (array): 成功返回空数组，失败返回错误信息
+     *         - responseInfo: 请求的Response信息
      */
-    public function updateIpsAutoOffline(array $ips, bool $autoOffline)
+    public function updateIpsAutoOffline($ips, $autoOffline)
     {
-        list($ret, $err) = $this->post('MgrUpdateIpsAutoOffline', array(
+        return $this->post('MgrUpdateIpsAutoOffline', [
             "ips" => $ips,
             "autoOffline" => $autoOffline
-        ));
-        return array($ret, $err);
+        ]);
     }
 
     /**
-     * Free cool down IPs
+     * 释放冷却中的IP
      *
-     * @param array $ips Array of IPs to free
-     * 
-     * @return array Contains return data and error
-     *          - result (array): Empty on success
-     *          - error (string|null): Error message if any
+     * @param array $ips 需要释放的IP地址列表
+     *
+     * @return array [result, responseInfo]
+     *         - result (array): 成功返回空数组，失败返回错误信息
+     *         - responseInfo: 请求的Response信息
      */
-    public function freeCoolDownIps(array $ips)
+    public function freeCoolDownIps($ips)
     {
-        list($ret, $err) = $this->post('MgrFreeCoolDownIps', array(
+        return $this->post('MgrFreeCoolDownIps', [
             "ips" => $ips
-        ));
-        return array($ret, $err);
+        ]);
     }
 
-     /**
+    /**
      * 补偿代理IP有效期
      *
      * @param int $accountId 账户ID
      * @param array $ips 需要补偿的IP地址列表
      * @param int $days 需要补偿的天数
      *
-     * @return array 包含返回数据和错误信息
-     *          - result (array): 成功时返回的数据 (例如空数组)
-     *          - error (string|null): 错误信息
+     * @return array [result, responseInfo]
+     *         - result (array): 成功返回实例列表，失败返回错误信息
+     *         - responseInfo: 请求的Response信息
      */
-    public function compensateProxy(int $accountId, array $ips, int $days)
+    public function compensateProxy($accountId, $ips, $days)
     {
-        list($ret, $err) = $this->post('MgrCompensateProxy', array(
+        return $this->post('MgrCompensateProxy', [
             "accountId" => $accountId,
             "ips" => $ips,
             "days" => $days
-        ));
-        return array($ret, $err);
-    }
-    
-    /**
-     * Query stats data
-     * 
-     * @param string $sql SQL query
-     * 
-     * @return array Contains return data and error
-     *          - result (array): Query results
-     *          - error (string|null): Error message if any
-     */
-    public function queryData(string $sql)
-    {
-        list($ret, $err) = $this->post('MgrQueryData', array(
-            "sql" => $sql
-        ));
-        return array($ret, $err);
+        ]);
     }
 
+    /**
+     * 同步IP段绑定的商品库存
+     *
+     * @param int $serverId IP段服务器ID
+     *
+     * @return array [result, responseInfo]
+     *         - result (array): 成功返回空数组，失败返回错误信息
+     *         - responseInfo: 请求的Response信息
+     */
+    public function syncInventory($serverId)
+    {
+        return $this->post('MgrSyncInventory', [
+            "serverId" => $serverId
+        ]);
+    }
+
+    /**
+     * 查询统计数据
+     *
+     * @param string $sql SQL查询语句
+     *
+     * @return array [result, responseInfo]
+     *         - result (array): 查询结果
+     *         - responseInfo: 请求的Response信息
+     */
+    public function queryData($sql)
+    {
+        return $this->post('MgrQueryData', [
+            "sql" => $sql
+        ]);
+    }
+
+    /**
+     * 获取所有渠道列表
+     *
+     * @param int $page 页码，默认1
+     * @param int $pageSize 每页数量，默认100
+     *
+     * @return array [result, responseInfo]
+     *         - result (array): 渠道列表信息
+     *         - responseInfo: 请求的Response信息
+     */
+    public function listAccounts($page = 1, $pageSize = 100)
+    {
+        return $this->post('MgrListAccounts', [
+            "page" => $page,
+            "pageSize" => $pageSize
+        ]);
+    }
 }
