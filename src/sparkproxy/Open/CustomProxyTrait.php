@@ -10,6 +10,21 @@ use SparkProxy\Http\Proxy;
 
 trait CustomProxyTrait
 {
+    
+    /**
+     * map ips to products
+     *
+     * @param array $ips ip array
+     * @param ?array object array with keys: product_id (string), ips (array)
+     */
+    public function customGetProductsByIps(array $ips)
+    {
+        $payload = array(
+            "ips" => $ips
+        );
+
+        return $this->post('CustomGetProductsByIps', $payload);
+    }
 
     /**
      * direct create proxy instance
