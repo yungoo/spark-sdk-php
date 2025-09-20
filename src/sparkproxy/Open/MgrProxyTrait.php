@@ -46,16 +46,16 @@ trait MgrProxyTrait
     /**
      * 修改段信息
      *
-     * @param int $serverId IP段服务器ID
+     * @param int $serverIds IP段服务器ID列表
      * @param int $port 端口号
      * @return array [result, responseInfo]
      *         - result (array): 成功返回空数组，失败返回错误信息
      *         - responseInfo: 请求的Response信息
      */
-    public function updateServer($serverId, $port)
+    public function updateServer($serverIds, $port)
     {
         return $this->post('MgrUpdateServer', [
-            "serverId" => $serverId,
+            "serverIds" => $serverIds,
             "port" => $port
         ]);
     }
