@@ -85,6 +85,21 @@ trait CustomProxyTrait
     }
 
     /**
+     * direct revert renew proxy instances
+     *
+     * @param String $reqOrderNo order number
+     * @param Array $instanceIds array of instance ids
+     */
+    public function customRevertRenewProxy(String $reqOrderNo, Array $instanceIds)
+    {
+        return $this->post('CustomRevertRenewProxy', array(
+            "reqOrderNo" => $reqOrderNo,
+            "instanceIds" => $accounts
+        ));
+    }
+
+
+    /**
      * direct check proxy account
      *
      * @param Array $accounts each item as "user:pass:host:port"
