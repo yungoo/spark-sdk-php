@@ -94,7 +94,7 @@ trait CustomProxyTrait
     {
         return $this->post('CustomRevertRenewProxy', array(
             "reqOrderNo" => $reqOrderNo,
-            "instanceIds" => $accounts
+            "instanceIds" => $instanceIds
         ));
     }
 
