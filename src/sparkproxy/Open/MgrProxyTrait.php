@@ -358,6 +358,38 @@ trait MgrProxyTrait
             "pageSize" => $pageSize
         ]);
     }
+
+    /**
+     * 根据IP获取账号下最近开通的实例信息
+     *
+     * @param int $accountId 账户ID
+     * @param array $ips IP地址列表
+     *
+     * @return array [result, responseInfo]
+     *         - result (array): 成功返回实例列表，失败返回错误信息，返回示例:
+     *              [
+     *                  [
+     *                      "productId" => "SKU",
+     *                      "type" => 类型(1静态ip/2流量),
+     *                      "instanceId" => "实例ID",
+     *                      "ip" => "IP地址",
+     *                      "port" => 端口号,
+     *                      "username" => "用户名",
+     *                      "password" => "密码",
+     *                      "expireAt" => 过期时间戳,
+     *                      "status" => 状态(1开通中/2正常使用/3释放中/4释放完成),
+     *                      "useType" => "使用类型(1账密/2ip白名单/3uuid)"
+     *                  ]
+     *              ]
+     *         - responseInfo: 请求的Response信息
+     */
+    public function getInstancesByIps($accountId, $ips)
+    {
+        return $this->post('MgrGetInstancesByIPs', [
+            "accountId" => $accountId,
+            "ips" => $ips
+        ]);
+    }
     
     public function listProducts(int $proxyType, String $countryCode = null, String $areaCode = null, 
         String $cityCode = null, String $productId="", $isp=null, $netType=0, $keywords="", int $page=1, $pageSize=100)
