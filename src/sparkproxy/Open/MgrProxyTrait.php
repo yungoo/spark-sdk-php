@@ -426,6 +426,33 @@ trait MgrProxyTrait
             "username" => $username
         ]);
     }
+
+    /**
+     * 将代理实例从一个账号转移到另一个账号
+     *
+     * @param string $requestId 请求ID
+     * @param array $instanceIds 实例ID列表
+     * @param int $fromAccountId 原账户ID
+     * @param int $toAccountId 目标账户ID
+     *
+     * @return array [result, responseInfo]
+     *         - result (array): 成功返回实例列表，失败返回错误信息，返回示例:
+     *              [
+     *                  "requestId" => "请求ID",
+     *                  "instanceIds" => ["转移成功的实例ID"],
+     *                  "count" => 转移成功的数量
+     *              ]
+     *         - responseInfo: 请求的Response信息
+     */
+    public function transferInstances($requestId, $instanceIds, $fromAccountId, $toAccountId)
+    {
+        return $this->post('MgrTransferInstances', [
+            "requestId" => $requestId,
+            "fromAccountId" => $fromAccountId,
+            "toAccountId" => $toAccountId,
+            "instanceIds" => $instanceIds
+        ]);
+    }
     
     public function listProducts(int $proxyType, String $countryCode = null, String $areaCode = null, 
         String $cityCode = null, String $productId="", $isp=null, $netType=0, $keywords="", int $page=1, $pageSize=100)
