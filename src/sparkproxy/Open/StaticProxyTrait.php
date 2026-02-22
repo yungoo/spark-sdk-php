@@ -165,8 +165,10 @@ trait StaticProxyTrait
      * reset proxy password
      *
      * @param array $instanceIds each item as "instanceId"
+     * 
+     * @param return null
      */
-    public function ResetProxyPassword(array $instanceIds)
+    public function resetProxyPassword(array $instanceIds)
     {
         return $this->post('ResetProxyPassword', array(
             "instanceIds" => $instanceIds

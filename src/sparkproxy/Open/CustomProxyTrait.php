@@ -111,19 +111,4 @@ trait CustomProxyTrait
         ));
     }
 
-    /**
-     * direct reset proxy accounts
-     *
-     * @param array $accounts each item as "user:pass:host:port"
-     * @param bool $restore if true, will restore to original password
-     *
-     */
-    public function customResetProxy(array $accounts, bool $restore)
-    {
-        return $this->post('CustomResetProxy', array(
-            "ips" => $accounts,
-            "restore" => $restore
-        ));
-    }
-
 }
