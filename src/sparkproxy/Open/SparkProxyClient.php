@@ -2,6 +2,13 @@
 
 namespace SparkProxy\Open;
 
+require_once __DIR__ . '/MgrCommonTrait.php';
+require_once __DIR__ . '/MgrAccountTrait.php';
+require_once __DIR__ . '/MgrAccountFundTrait.php';
+require_once __DIR__ . '/MgrProductTrait.php';
+require_once __DIR__ . '/MgrStaticServerTrait.php';
+require_once __DIR__ . '/MgrProxyTrait.php';
+
 use SparkProxy\Auth;
 use SparkProxy\Config;
 use SparkProxy\Http\Error;
