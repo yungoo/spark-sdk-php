@@ -115,6 +115,25 @@ trait MgrAccountTrait
     }
 
     /**
+     * 获取渠道密钥。
+     *
+     * @param int $accountId 渠道 ID。
+     *
+     * @return array [result, responseInfo]
+     *         - result['data'] (array): 正常返回字段
+     *              accountId (int): 渠道 ID
+     *              code (string): 渠道编码
+     *              secret (string): 32 位渠道密钥
+     *              updatedAt (string): 更新时间
+     */
+    public function getAccountSecret($accountId)
+    {
+        return $this->post('MgrAccountGetSecret', [
+            "accountId" => $accountId
+        ]);
+    }
+
+    /**
      * 更新渠道。
      *
      * @param int $accountId 渠道 ID。
@@ -150,6 +169,27 @@ trait MgrAccountTrait
             $payload["params"] = $params;
         }
         return $this->post('MgrAccountUpdate', $payload);
+    }
+
+    /**
+     * 更新渠道密钥。
+     *
+     * @param int $accountId 渠道 ID。
+     * @param string $secret 新密钥，要求 32 位字符串。
+     *
+     * @return array [result, responseInfo]
+     *         - result['data'] (array): 正常返回字段
+     *              accountId (int): 渠道 ID
+     *              code (string): 渠道编码
+     *              secret (string): 更新后的 32 位渠道密钥
+     *              updatedAt (string): 更新时间
+     */
+    public function updateAccountSecret($accountId, $secret)
+    {
+        return $this->post('MgrAccountUpdateSecret', [
+            "accountId" => $accountId,
+            "secret" => $secret
+        ]);
     }
 
     /**
