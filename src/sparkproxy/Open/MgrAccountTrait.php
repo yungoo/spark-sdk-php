@@ -73,6 +73,7 @@ trait MgrAccountTrait
      *              secret (string): 渠道密钥
      *              fundAccount (array): 资金账户信息
      *                  accountId (int): 渠道 ID
+     *                  currency (string): 币种代码，仅支持 CNY 或 USD
      *                  payMode (string): 结算方式
      *                  availableAmount (string): 可用余额
      *                  frozenAmount (string): 冻结余额

@@ -12,6 +12,7 @@ trait MgrAccountFundTrait
      * @return array [result, responseInfo]
      *         - result['data'] (array): 正常返回字段
      *              accountId (int): 渠道 ID
+     *              currency (string): 币种代码，仅支持 CNY 或 USD
      *              payMode (string): 结算方式，POSTPAID / PREPAID
      *              availableAmount (string): 可用余额
      *              frozenAmount (string): 冻结余额
@@ -32,11 +33,13 @@ trait MgrAccountFundTrait
      *
      * @param int $accountId 渠道 ID。
      * @param string $payMode 结算方式，支持 POSTPAID / PREPAID。
+     * @param string $currency 币种代码，仅支持 CNY 或 USD，传空字符串表示不更新。
      * @param string $creditLimit 授信额度，切换到后付费时可一并传入。
      *
      * @return array [result, responseInfo]
      *         - result['data'] (array): 正常返回字段
      *              accountId (int): 渠道 ID
+     *              currency (string): 币种代码，仅支持 CNY 或 USD
      *              payMode (string): 结算方式，POSTPAID / PREPAID
      *              availableAmount (string): 可用余额
      *              frozenAmount (string): 冻结余额
@@ -45,7 +48,7 @@ trait MgrAccountFundTrait
      *              status (int): 状态
      *              updatedAt (string): 更新时间
      */
-    public function updateAccountFundPayMode($accountId, $payMode, $creditLimit = '')
+    public function updateAccountFundPayMode($accountId, $payMode, $creditLimit = '', $currency = '')
     {
         $payload = [
             "accountId" => $accountId,
@@ -53,6 +56,9 @@ trait MgrAccountFundTrait
         ];
         if ($creditLimit !== '') {
             $payload["creditLimit"] = $creditLimit;
+        }
+        if ($currency !== '') {
+            $payload["currency"] = $currency;
         }
         return $this->post('MgrAccountFundUpdatePayMode', $payload);
     }
