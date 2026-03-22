@@ -4,6 +4,30 @@ namespace SparkProxy\Open;
 
 trait MgrAccountTrait
 {
+    private function mergeAccountParams($params = null, $refundConfig = null)
+    {
+        if ($params === null) {
+            $merged = [];
+        } else {
+            if (!is_array($params)) {
+                throw new \InvalidArgumentException('params must be array or null');
+            }
+            $merged = $params;
+        }
+
+        if ($refundConfig !== null) {
+            if (!is_array($refundConfig)) {
+                throw new \InvalidArgumentException('refundConfig must be array or null');
+            }
+            if (array_key_exists('refundConfig', $merged)) {
+                throw new \InvalidArgumentException('params already contains refundConfig; use $refundConfig only once');
+            }
+            $merged['refundConfig'] = $refundConfig;
+        }
+
+        return empty($merged) ? null : $merged;
+    }
+
     /**
      * 获取渠道列表。
      *
@@ -57,6 +81,7 @@ trait MgrAccountTrait
      * @param string $code 渠道编码，留空时由服务端生成。
      * @param bool|null $verifySign 是否启用签名校验，传 null 表示不显式设置。
      * @param array|null $params 渠道扩展参数。
+     * @param array|null $refundConfig 退款配置，将自动写入 params.refundConfig。
      *
      * @return array [result, responseInfo]
      *         - result['data'] (array): 正常返回字段
@@ -83,7 +108,7 @@ trait MgrAccountTrait
      *                  status (int): 状态
      *                  updatedAt (string): 更新时间
      */
-    public function createAccount($name, $type, $authority = 0, $code = '', $verifySign = null, $params = null)
+    public function createAccount($name, $type, $authority = 0, $code = '', $verifySign = null, $params = null, $refundConfig = null)
     {
         $payload = [
             "name" => $name,
@@ -96,8 +121,9 @@ trait MgrAccountTrait
         if ($verifySign !== null) {
             $payload["verifySign"] = $verifySign;
         }
-        if ($params !== null) {
-            $payload["params"] = $params;
+        $mergedParams = $this->mergeAccountParams($params, $refundConfig);
+        if ($mergedParams !== null) {
+            $payload["params"] = $mergedParams;
         }
         return $this->post('MgrAccountCreate', $payload);
     }
@@ -147,6 +173,7 @@ trait MgrAccountTrait
      * @param string $code 渠道编码，传空字符串表示不更新。
      * @param bool|null $verifySign 是否启用签名校验，传 null 表示不更新。
      * @param array|null $params 渠道扩展参数，传 null 表示不更新。
+     * @param array|null $refundConfig 退款配置，将自动写入 params.refundConfig。
      *
      * @return array [result, responseInfo]
      *         - result['data'] (array): 正常返回字段
@@ -161,7 +188,7 @@ trait MgrAccountTrait
      *              createdAt (string): 创建时间
      *              updatedAt (string): 更新时间
      */
-    public function updateAccount($accountId, $name = '', $authority = 0, $code = '', $verifySign = null, $params = null)
+    public function updateAccount($accountId, $name = '', $authority = 0, $code = '', $verifySign = null, $params = null, $refundConfig = null)
     {
         $payload = [
             "accountId" => $accountId,
@@ -174,8 +201,9 @@ trait MgrAccountTrait
         if ($verifySign !== null) {
             $payload["verifySign"] = $verifySign;
         }
-        if ($params !== null) {
-            $payload["params"] = $params;
+        $mergedParams = $this->mergeAccountParams($params, $refundConfig);
+        if ($mergedParams !== null) {
+            $payload["params"] = $mergedParams;
         }
         return $this->post('MgrAccountUpdate', $payload);
     }
