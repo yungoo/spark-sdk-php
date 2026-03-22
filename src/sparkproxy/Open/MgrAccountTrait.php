@@ -54,6 +54,7 @@ trait MgrAccountTrait
      * @param string $name 渠道名称。
      * @param string $type 渠道类型，例如 YD。
      * @param int $authority 渠道权限位图。
+     * @param string $code 渠道编码，留空时由服务端生成。
      * @param bool|null $verifySign 是否启用签名校验，传 null 表示不显式设置。
      * @param array|null $params 渠道扩展参数。
      *
@@ -82,13 +83,16 @@ trait MgrAccountTrait
      *                  status (int): 状态
      *                  updatedAt (string): 更新时间
      */
-    public function createAccount($name, $type, $authority = 0, $verifySign = null, $params = null)
+    public function createAccount($name, $type, $authority = 0, $code = '', $verifySign = null, $params = null)
     {
         $payload = [
             "name" => $name,
             "type" => $type,
             "authority" => $authority
         ];
+        if ($code !== '') {
+            $payload["code"] = $code;
+        }
         if ($verifySign !== null) {
             $payload["verifySign"] = $verifySign;
         }
@@ -140,6 +144,7 @@ trait MgrAccountTrait
      * @param int $accountId 渠道 ID。
      * @param string $name 渠道名称。
      * @param int $authority 渠道权限位图。
+     * @param string $code 渠道编码，传空字符串表示不更新。
      * @param bool|null $verifySign 是否启用签名校验，传 null 表示不更新。
      * @param array|null $params 渠道扩展参数，传 null 表示不更新。
      *
@@ -156,13 +161,16 @@ trait MgrAccountTrait
      *              createdAt (string): 创建时间
      *              updatedAt (string): 更新时间
      */
-    public function updateAccount($accountId, $name = '', $authority = 0, $verifySign = null, $params = null)
+    public function updateAccount($accountId, $name = '', $authority = 0, $code = '', $verifySign = null, $params = null)
     {
         $payload = [
             "accountId" => $accountId,
             "name" => $name,
             "authority" => $authority
         ];
+        if ($code !== '') {
+            $payload["code"] = $code;
+        }
         if ($verifySign !== null) {
             $payload["verifySign"] = $verifySign;
         }
