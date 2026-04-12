@@ -15,15 +15,17 @@ trait MgrStaticServerTrait
      * @param int $netType 网络类型，1-原生，2-广播。
      * @param string $asn ASN 编号。
      * @param string $isp ISP 运营商名称。
+     * @param int $type 段类型，1-独占段，2-共享段。
      *
      * @return array [result, responseInfo]
      */
-    public function addServer($countryCode, $stateCode, $cityCode, $address, $port, $netType, $asn = '', $isp = '')
+    public function addServer($countryCode, $stateCode, $cityCode, $address, $port, $netType, $asn = '', $isp = '', $type = 1)
     {
         return $this->post('MgrAddServer', [
             "countryCode" => $countryCode,
             "stateCode" => $stateCode,
             "cityCode" => $cityCode,
+            "type" => $type,
             "address" => $address,
             "port" => $port,
             "netType" => $netType,
@@ -37,15 +39,20 @@ trait MgrStaticServerTrait
      *
      * @param array $serverIds IP 段服务器 ID 列表。
      * @param int $port 端口号。
+     * @param int|null $type 段类型，1-独占段，2-共享段；null 表示不更新。
      *
      * @return array [result, responseInfo]
      */
-    public function updateServer($serverIds, $port)
+    public function updateServer($serverIds, $port, $type = null)
     {
-        return $this->post('MgrUpdateServer', [
+        $payload = [
             "serverIds" => $serverIds,
             "port" => $port
-        ]);
+        ];
+        if ($type !== null) {
+            $payload["type"] = $type;
+        }
+        return $this->post('MgrUpdateServer', $payload);
     }
 
     /**

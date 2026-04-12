@@ -1,5 +1,12 @@
 # Changelog
 
+## Unreleased
+
+* 补充复用商品（proxyType=105）示例：`examples/SB_SharedProduct105_CreateProxy.php`
+* 更新 `customCreateProxy` 参数说明：共享商品校验重复开通，普通静态商品保持历史兼容逻辑
+* 完善 `MgrProductTrait`：`createProduct/updateProduct` 支持 `shareable` 字段
+* 完善 `MgrStaticServerTrait`：`addServer/updateServer` 支持段类型 `type`
+
 ## 0.8.0 (2025-07-24)
 
 * 重构管理接口

@@ -110,13 +110,14 @@ trait MgrProductTrait
      * @param int $bandwidth 带宽值。
      * @param string $isp ISP 名称。
      * @param int $status 商品状态。
+     * @param bool|null $shareable 是否共享商品，null 表示不传该字段。
      *
      * @return array [result, responseInfo]
      *         - result['data'] (array): 正常返回字段同 getProduct 返回字段
      */
-    public function createProduct($categoryId, $name, $countryCode = '', $stateCode = '', $cityCode = '', $unit = 0, $duration = 0, $costPriceRef = '', $ispType = 0, $netType = 0, $bandwidthType = 0, $bandwidth = 0, $isp = '', $status = 0)
+    public function createProduct($categoryId, $name, $countryCode = '', $stateCode = '', $cityCode = '', $unit = 0, $duration = 0, $costPriceRef = '', $ispType = 0, $netType = 0, $bandwidthType = 0, $bandwidth = 0, $isp = '', $status = 0, $shareable = null)
     {
-        return $this->post('MgrProductCreate', [
+        $payload = [
             "categoryId" => $categoryId,
             "name" => $name,
             "countryCode" => $countryCode,
@@ -131,7 +132,14 @@ trait MgrProductTrait
             "bandwidth" => $bandwidth,
             "isp" => $isp,
             "status" => $status
-        ]);
+        ];
+
+        // 共享商品标记（true-共享商品，false-独占商品）
+        if ($shareable !== null) {
+            $payload["shareable"] = (bool)$shareable;
+        }
+
+        return $this->post('MgrProductCreate', $payload);
     }
 
     /**
@@ -152,13 +160,14 @@ trait MgrProductTrait
      * @param int $bandwidth 带宽值。
      * @param string $isp ISP 名称。
      * @param int $status 商品状态。
+     * @param bool|null $shareable 是否共享商品，null 表示不传该字段。
      *
      * @return array [result, responseInfo]
      *         - result['data'] (array): 正常返回字段同 getProduct 返回字段
      */
-    public function updateProduct($productId, $categoryId = 0, $name = '', $countryCode = '', $stateCode = '', $cityCode = '', $unit = 0, $duration = 0, $costPriceRef = '', $ispType = 0, $netType = 0, $bandwidthType = 0, $bandwidth = 0, $isp = '', $status = 0)
+    public function updateProduct($productId, $categoryId = 0, $name = '', $countryCode = '', $stateCode = '', $cityCode = '', $unit = 0, $duration = 0, $costPriceRef = '', $ispType = 0, $netType = 0, $bandwidthType = 0, $bandwidth = 0, $isp = '', $status = 0, $shareable = null)
     {
-        return $this->post('MgrProductUpdate', [
+        $payload = [
             "productId" => $productId,
             "categoryId" => $categoryId,
             "name" => $name,
@@ -174,7 +183,14 @@ trait MgrProductTrait
             "bandwidth" => $bandwidth,
             "isp" => $isp,
             "status" => $status
-        ]);
+        ];
+
+        // 共享商品标记（true-共享商品，false-独占商品）
+        if ($shareable !== null) {
+            $payload["shareable"] = (bool)$shareable;
+        }
+
+        return $this->post('MgrProductUpdate', $payload);
     }
 
     /**

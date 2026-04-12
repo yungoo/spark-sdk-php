@@ -51,6 +51,15 @@ if ($err == null) {
 }
 ```
 
+### 复用商品（proxyType=105）
+
+- 拉取库存：`getProductStock(105)`
+- 共享商品（`products.shareable=1`）下，系统会校验同账号同IP重复开通
+- 普通静态商品即使走 `customCreateProxy(..., shareable=true, ...)`，保持历史兼容逻辑
+
+可参考示例：
+- `examples/SB_SharedProduct105_CreateProxy.php`
+
 ## 测试
 
 ``` bash

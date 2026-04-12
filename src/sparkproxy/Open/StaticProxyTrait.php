@@ -4,7 +4,11 @@ namespace SparkProxy\Open;
 
 trait StaticProxyTrait
 {
-    
+    /**
+     * get product stock
+     *
+     * @param int $proxyType static proxy type, e.g. 103(普通静态), 105(复用静态)
+     */
     public function getProductStock(int $proxyType, String $countryCode = null, String $areaCode = null, 
         String $cityCode = null, String $productId="", $isp=null, $netType=0, int $page=1, $pageSize=100)
     {
