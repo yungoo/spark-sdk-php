@@ -80,12 +80,13 @@ trait MgrStaticServerTrait
      * @param string $cityCode 城市代码。
      * @param int|null $accountId 渠道 ID。
      * @param int|null $productId 商品 ID。
+     * @param int|null $categoryId 类目 ID。
      * @param int $page 页码，从 1 开始。
      * @param int $pageSize 每页数量。
      *
      * @return array [result, responseInfo]
      */
-    public function listServerInfo($cidr = '', $countryCode = '', $stateCode = '', $cityCode = '', $accountId = null, $productId = null, $page = 1, $pageSize = 100)
+    public function listServerInfo($cidr = '', $countryCode = '', $stateCode = '', $cityCode = '', $accountId = null, $productId = null, $categoryId = null, $page = 1, $pageSize = 100)
     {
         $params = [
             "cidr" => $cidr,
@@ -94,6 +95,7 @@ trait MgrStaticServerTrait
             "cityCode" => $cityCode,
             "accountId" => $accountId,
             "productId" => $productId,
+            "categoryId" => $categoryId,
             "page" => $page,
             "pageSize" => $pageSize
         ];
